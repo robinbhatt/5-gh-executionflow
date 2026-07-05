@@ -34,8 +34,11 @@ jobs:
       - name: Install dependencies
         run: npm ci
       - name: Test code
+        id: run-tests
         run: npm run test
       - name: Upload test report
+        # if: ${{ steps.run-tests.outcome == 'failure' }} # same as below. We can omit the interpolation / expression evaulatore and directly write our expression.
+        if: steps.run-tests.outcome == 'failure'
         uses: actions/upload-artifact@v7
         with:
           name: test-report
